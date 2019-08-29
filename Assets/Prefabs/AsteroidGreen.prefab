@@ -39,7 +39,7 @@ Transform:
   m_GameObject: {fileID: 1942003640215022}
   m_LocalRotation: {x: -0.70710677, y: 0.00000006181724, z: -0.00000006181724, w: 0.7071068}
   m_LocalPosition: {x: -34.9, y: -0, z: -10}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 8, y: 8, z: 8}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -126,7 +126,6 @@ MonoBehaviour:
   screenLeftBorder: -58
   screenRightBorder: 58
   asteroidColor: 3
-  gc: {fileID: 0}
 --- !u!135 &135888010645470514
 SphereCollider:
   m_ObjectHideFlags: 1

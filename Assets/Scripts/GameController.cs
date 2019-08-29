@@ -4,9 +4,34 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
-    public int numberOfAsteroids;  //current number of asteroids on the scene
-    public int level;
-    public  GameObject asteroid;  //on new level will make new green asteroids
+    [SerializeField] private int numberOfAsteroids;  //current number of asteroids on the scene
+    [SerializeField] private int level;
+    [SerializeField] private GameObject asteroid;  //on new level will make new green asteroids
+
+    [SerializeField] private float screenTopBorder;
+    [SerializeField] private float screenBottomBorder;
+    [SerializeField] private float screenLeftBorder;
+    [SerializeField] private float screenRightBorder;
+
+    public float GetScreenTopBorder()
+    {
+        return screenTopBorder;
+    }
+
+    public float GetScreenBottomBorder()
+    {
+        return screenBottomBorder;
+    }
+
+    public float GetScreenLeftBorder()
+    {
+        return screenLeftBorder;
+    }
+
+    public float GetScreenRightBorder()
+    {
+        return screenRightBorder;
+    }
 
     public void UpdateNumberOfAsteroids()
     {
@@ -26,5 +51,10 @@ public class GameController : MonoBehaviour {
                 numberOfAsteroids++;
             }
         }
+    }
+
+    public void IncreaseNumberOfAsteroids()
+    {
+        numberOfAsteroids++;
     }
 }
