@@ -1,25 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SpaceshipController : MonoBehaviour {
 
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float speed;       //Speed of moving forward
     [SerializeField] private float turnPush;    //Force of turning ship
-
-    //[SerializeField] private float screenTopBorder;
-    //[SerializeField] private float screenBottomBorder;
-    //[SerializeField] private float screenLeftBorder;
-    //[SerializeField] private float screenRightBorder;
-
+    
     [SerializeField] private float shotForce;
     [SerializeField] private GameObject shot;
 
     public Animator spinAnimation;
     private GameController gameControer;
-
-    // Use this for initialization
+    
     void Start () {
         spinAnimation.enabled = false;
         gameControer = GameObject.FindObjectOfType<GameController>();
@@ -36,37 +28,56 @@ public class SpaceshipController : MonoBehaviour {
             Destroy(newShot, 5.0f);
         }
 
-        //Screen wraping. If spaceship goes out of the screen border it will show up on the other side
+        ScreenWrapingCheck(); //Screen wraping. If spaceship goes out of the screen border it will show up on the other side
+        CheckForAnimation();  //Get spin animation. Chech for key is up to stop animation
+    }
+
+    void FixedUpdate()
+    {
+        float moveVertical = Input.GetAxis("Vertical");
+        float moveHorizontal = Input.GetAxis("Horizontal");
+
+        if (Input.GetButton("Horizontal"))
+        {
+            spinAnimation.enabled = false;                                  // disable animator in order to be able to turn the spaceship
+            rb.transform.Rotate(new Vector3(0.0f, 0.0f, moveHorizontal * turnPush));   // turn the spaceship
+        }
+
+        rb.AddRelativeForce(Vector3.up * moveVertical * speed);             // move forward the spaceship      
+    }
+
+    void ScreenWrapingCheck()
+    {        
         Vector3 newPosition = transform.position;
-        //Check Top of the screen
+
         if (transform.position.z > gameControer.GetScreenTopBorder())
         {
             newPosition.z = gameControer.GetScreenBottomBorder();
         }
-        //Check bottom of the screen
+        
         if (transform.position.z < gameControer.GetScreenBottomBorder())
         {
             newPosition.z = gameControer.GetScreenTopBorder();
         }
-        //Check right site of the screen
+        
         if (transform.position.x > gameControer.GetScreenRightBorder())
         {
             newPosition.x = gameControer.GetScreenLeftBorder();
         }
-        //Check left side of the screen
+        
         if (transform.position.x < gameControer.GetScreenLeftBorder())
         {
             newPosition.x = gameControer.GetScreenRightBorder();
         }
         transform.position = newPosition;
+    }
 
-        //Get spin animation
-        //Chech for key is up to stop animation
+    void CheckForAnimation()
+    {
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.W))
         {
-            spinAnimation.SetInteger("SortOfSpin", 0);            
+            spinAnimation.SetInteger("SortOfSpin", 0);
         }
-        //Check for key input input to start spin animation
         if (Input.GetKeyDown(KeyCode.A))
         {
             spinAnimation.enabled = true;
@@ -87,20 +98,5 @@ public class SpaceshipController : MonoBehaviour {
             spinAnimation.enabled = true;
             spinAnimation.SetInteger("SortOfSpin", 2);    // 2 equels negative spin on X animation 
         }
-
-    }
-
-    void FixedUpdate()
-    {
-        float moveVertical = Input.GetAxis("Vertical");
-        float moveHorizontal = Input.GetAxis("Horizontal");
-
-        if (Input.GetButton("Horizontal"))
-        {
-            spinAnimation.enabled = false;                                  // disable animator in order to be able to turn the spaceship
-            rb.transform.Rotate(new Vector3(0.0f, 0.0f, moveHorizontal * turnPush));   // turn the spaceship
-        }
-
-        rb.AddRelativeForce(Vector3.up * moveVertical * speed);             // move forward the spaceship      
-    }
+    }    
 }

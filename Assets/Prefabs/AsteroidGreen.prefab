@@ -99,7 +99,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 36
+  m_Constraints: 4
   m_CollisionDetection: 0
 --- !u!114 &114080859583926134
 MonoBehaviour:
@@ -114,17 +114,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxPush: 200
   maxSpin: 200
-  rb: {fileID: 54601080466870718}
+  rigidbody: {fileID: 54601080466870718}
   blueAsteroid: {fileID: 1547739685748714, guid: c678c6afdd16fc548b73f4cc6960532d,
     type: 2}
   violetAsteroid: {fileID: 1770296288366332, guid: 6640ea239162cc641b5b5bf8ea51a872,
     type: 2}
   redAsteroid: {fileID: 1984514437155256, guid: 386f19353ca94e9449105c70c122ebbb,
     type: 2}
-  screenTopBorder: 45
-  screenBottomBorder: -45
-  screenLeftBorder: -58
-  screenRightBorder: 58
   asteroidColor: 3
 --- !u!135 &135888010645470514
 SphereCollider:

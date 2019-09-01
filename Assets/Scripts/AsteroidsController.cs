@@ -6,57 +6,31 @@ public class AsteroidsController : MonoBehaviour
 {
     [SerializeField] private float maxPush;
     [SerializeField] private float maxSpin;
-    [SerializeField] private Rigidbody rb;
-
     [SerializeField] private GameObject blueAsteroid;
     [SerializeField] private GameObject violetAsteroid;
     [SerializeField] private GameObject redAsteroid;
-
-    //[SerializeField] private float screenTopBorder;
-    //[SerializeField] private float screenBottomBorder;
-    //[SerializeField] private float screenLeftBorder;
-    //[SerializeField] private float screenRightBorder;
     [SerializeField] private AsteroidType asteroidColor;
 
-    private GameController gameControer;
+    private Rigidbody rigidbody;
+    private GameController gameController;
     
     void Start () {
         //Rendom movement of asteroids
         Vector3 push = new Vector3(Random.Range(-maxPush, maxPush), 0.0f, Random.Range(-maxPush, maxPush));
         float torque = Random.Range(-maxSpin, maxSpin);
 
-        rb.AddForce(push);
-        rb.AddTorque(new Vector3(torque, 0.0f, torque));
+        rigidbody = gameObject.GetComponent<Rigidbody>();
+        rigidbody.AddForce(push);
+        rigidbody.AddTorque(new Vector3(torque, 0.0f, torque));
 
-        gameControer = GameObject.FindObjectOfType<GameController>();
+        gameController = GameObject.FindObjectOfType<GameController>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
-        //Screen wraping. If asteroid goes out of the screen border it will show up on the other side
+	void Update ()
+    {
         Vector3 newPosition = transform.position;
-        //Check Top of the screen
-        if (transform.position.z > gameControer.GetScreenTopBorder())
-        {
-            newPosition.z = gameControer.GetScreenBottomBorder();
-        }
-        //Check bottom of the screen
-        if (transform.position.z < gameControer.GetScreenBottomBorder())
-        {
-            newPosition.z = gameControer.GetScreenTopBorder();
-        }
-        //Check right site of the screen
-        if (transform.position.x > gameControer.GetScreenRightBorder())
-        {
-            newPosition.x = gameControer.GetScreenLeftBorder();
-        }
-        //Check left side of the screen
-        if (transform.position.x < gameControer.GetScreenLeftBorder())
-        {
-            newPosition.x = gameControer.GetScreenRightBorder();
-        }
-        transform.position = newPosition;
+        ScreenWrapingCheck(newPosition);   //Screen wraping. If asteroid goes out of the screen border it will show up on the other side
     }
 
     private void OnTriggerEnter(Collider other)
@@ -68,36 +42,56 @@ public class AsteroidsController : MonoBehaviour
             //Check state of asteroid
             if (asteroidColor == AsteroidType.GREEN)
             {
-                //Spaw blue asteroid
-                Instantiate(blueAsteroid, transform.position, transform.rotation);
-                Instantiate(blueAsteroid, transform.position, transform.rotation);
-
-                gameControer.IncreaseNumberOfAsteroids();
+                ChangeAsteroid(blueAsteroid);                
             }
             else if (asteroidColor == AsteroidType.BLUE)
             {
-                //Spaw violet asteroid
-                Instantiate(violetAsteroid, transform.position, transform.rotation);
-                Instantiate(violetAsteroid, transform.position, transform.rotation);
-
-                gameControer.IncreaseNumberOfAsteroids();
+                ChangeAsteroid(violetAsteroid);
             }
             else if(asteroidColor == AsteroidType.VIOLET)
             {
-                //Spaw red asteroid
-                Instantiate(redAsteroid, transform.position, transform.rotation);
-                Instantiate(redAsteroid, transform.position, transform.rotation);
-
-                gameControer.IncreaseNumberOfAsteroids();
+                ChangeAsteroid(redAsteroid);
             }
             else if(asteroidColor == AsteroidType.RED)
             {
-                //Get asteroids count - 1
-                gameControer.UpdateNumberOfAsteroids();
+                gameController.UpdateNumberOfAsteroids();
             }
 
             Destroy(gameObject);
         }
         
+    }
+
+    void ChangeAsteroid(GameObject newAsteroid)
+    {
+        Instantiate(newAsteroid, transform.position, transform.rotation);
+    }
+
+    void ScreenWrapingCheck(Vector3 newPosition)
+    {
+        
+        //Check Top of the screen
+        if (transform.position.z > gameController.GetScreenTopBorder())
+        {
+            newPosition.z = gameController.GetScreenBottomBorder();
+        }
+        //Check bottom of the screen
+        if (transform.position.z < gameController.GetScreenBottomBorder())
+        {
+            newPosition.z = gameController.GetScreenTopBorder();
+        }
+        //Check right site of the screen
+        if (transform.position.x > gameController.GetScreenRightBorder())
+        {
+            newPosition.x = gameController.GetScreenLeftBorder();
+        }
+        //Check left side of the screen
+        if (transform.position.x < gameController.GetScreenLeftBorder())
+        {
+            newPosition.x = gameController.GetScreenRightBorder();
+        }
+        if (transform.position.y != 0)
+            newPosition.y = 0;
+        transform.position = newPosition;
     }
 }

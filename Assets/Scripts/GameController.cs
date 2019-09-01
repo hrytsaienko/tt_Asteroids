@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameController : MonoBehaviour {
 
@@ -46,7 +44,7 @@ public class GameController : MonoBehaviour {
             //Spawn new asteroids
             for (int i = 0; i < level*2; i++)
             {
-                Vector3 spawnPos = new Vector3(Random.Range(-45.0f, 45.0f), 0.0f, Random.Range(-58.0f, 58.0f));
+                Vector3 spawnPos = new Vector3(Random.Range(screenBottomBorder, screenTopBorder), 0.0f, Random.Range(screenLeftBorder, screenRightBorder));
                 Instantiate(asteroid, spawnPos, Quaternion.identity);
                 numberOfAsteroids++;
             }
